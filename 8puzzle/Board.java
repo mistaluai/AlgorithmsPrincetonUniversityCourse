@@ -1,19 +1,28 @@
 public class Board {
 
+    int[][] boardArray;
+
     // create a board from an n-by-n array of tiles,
     // where tiles[row][col] = tile at (row, col)
     public Board(int[][] tiles) {
-
+        boardArray = tiles;
     }
 
     // string representation of this board
     public String toString() {
-        return null;
+        String boardString = "";
+        for (int i = 0; i < dimension(); i++) {
+            for (int j = 0; j < dimension(); j++) {
+                boardString += boardArray[i][j] + " ";
+            }
+            boardString += "\n";
+        }
+        return boardString;
     }
 
     // board dimension n
     public int dimension() {
-        return 0;
+        return boardArray.length;
     }
 
     // number of tiles out of place

@@ -27,7 +27,17 @@ public class Board {
 
     // number of tiles out of place
     public int hamming() {
-        return 0;
+        int hammingNumber = 0;
+        int driver = 1;
+        for (int i = 0; i < dimension(); i++) {
+            for (int j = 0; j < dimension(); j++) {
+                if (boardArray[i][j] != driver)
+                    hammingNumber++;
+                driver++;
+            }
+
+        }
+        return hammingNumber;
     }
 
     // sum of Manhattan distances between tiles and goal
@@ -42,7 +52,21 @@ public class Board {
 
     // does this board equal y?
     public boolean equals(Object y) {
-        return false;
+        if (y == null)
+            return false;
+        if (y.getClass() != this.getClass())
+            return false;
+
+        Board boardY = (Board) y;
+
+        for (int i = 0; i < dimension(); i++) {
+            for (int j = 0; j < dimension(); j++) {
+                if (boardY.boardArray[i][j] != this.boardArray[i][j])
+                    return false;
+            }
+
+        }
+        return true;
     }
 
     // all neighboring boards

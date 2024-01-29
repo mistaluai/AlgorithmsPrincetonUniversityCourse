@@ -31,14 +31,14 @@ public class Board {
 
     // string representation of this board
     public String toString() {
-        String boardString = "";
+        StringBuilder boardString = new StringBuilder();
         for (int i = 0; i < dimension(); i++) {
             for (int j = 0; j < dimension(); j++) {
-                boardString += boardArray[i][j] + " ";
+                boardString.append(boardArray[i][j] + " ");
             }
-            boardString += (i != dimension() - 1) ? "\n" : "";
+            boardString.append((i != dimension() - 1) ? "\n" : "");
         }
-        return boardString;
+        return boardString.toString();
     }
 
     // board dimension n
@@ -78,7 +78,7 @@ public class Board {
     private int[] getNumberCoordinates(int number) {
         int[] coordinates = new int[2];
         int n = boardArray.length;
-        double coordinateUnparsed = number / n;
+        double coordinateUnparsed = (double) number / (double) n;
         coordinates[0] = (int) Math.floor(coordinateUnparsed);
         coordinates[1] = (int) (n * (coordinateUnparsed - coordinates[0]));
         return coordinates;
@@ -158,10 +158,10 @@ public class Board {
     // a board that is obtained by exchanging any pair of tiles
     public Board twin() {
         int random = StdRandom.uniformInt(3);
-        Iterator twinIterator = neighbors().iterator();
+        Iterator<Board> twinIterator = neighbors().iterator();
         Board twinBoard = new Board(boardArray);
         for (int i = 0; i <= random; i++)
-            twinBoard = (Board) twinIterator.next();
+            twinBoard = twinIterator.next();
         return twinBoard;
     }
 

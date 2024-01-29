@@ -61,7 +61,25 @@ public class Board {
 
     // sum of Manhattan distances between tiles and goal
     public int manhattan() {
-        return 0;
+        int manhattenSum = 0;
+        for (int y1 = 0; y1 < boardArray.length; y1++) {
+            for (int x1 = 0; x1 < boardArray.length; x1++) {
+                if (boardArray[y1][x1] != 0) {
+                    int[] target = getNumberCoordinates(boardArray[y1][x1]);
+                    manhattenSum += Math.abs(target[0] - y1) + Math.abs(target[1] - x1);
+                }
+            }
+        }
+        return manhattenSum;
+    }
+
+    private int[] getNumberCoordinates(int number) {
+        int[] coordinates = new int[2];
+        int n = boardArray.length;
+        double coordinateUnparsed = number / n;
+        coordinates[0] = (int) Math.floor(coordinateUnparsed);
+        coordinates[1] = (int) (n * (coordinateUnparsed - coordinates[0]));
+        return coordinates;
     }
 
     // is this board the goal board?
@@ -154,6 +172,7 @@ public class Board {
         List<Board> initialNeighbors = (List<Board>) initial.neighbors();
         System.out.println("The board is: \n" + initial.toString());
         System.out.println("The hamming of the board is: " + initial.hamming());
+        System.out.println("The manhatten sum of the board is: " + initial.manhattan());
         System.out.println("Is the board solved ? " + initial.isGoal());
         System.out.println("It has " + initialNeighbors.size() + " neighbors");
         int index = 1;

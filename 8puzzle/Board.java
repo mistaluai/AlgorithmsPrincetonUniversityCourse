@@ -1,11 +1,30 @@
+import edu.princeton.cs.algs4.In;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Board {
 
-    int[][] boardArray;
+    private int[][] boardArray;
+    private int zeroY, zeroX;
 
     // create a board from an n-by-n array of tiles,
     // where tiles[row][col] = tile at (row, col)
     public Board(int[][] tiles) {
-        boardArray = tiles;
+        boardArray = tiles.clone();
+        for (int i = 0; i < boardArray.length; i++)
+            boardArray[i] = tiles[i].clone();
+
+
+        for (int y = 0; y < tiles.length; y++) {
+            for (int x = 0; x < tiles.length; x++) {
+                if (tiles[y][x] == 0) {
+                    zeroY = y;
+                    zeroX = x;
+                }
+            }
+        }
+        // System.out.println("[DEBUGGING] Board is: \n" + toString());
     }
 
     // string representation of this board
@@ -15,7 +34,7 @@ public class Board {
             for (int j = 0; j < dimension(); j++) {
                 boardString += boardArray[i][j] + " ";
             }
-            boardString += "\n";
+            boardString += (i != dimension() - 1) ? "\n" : "";
         }
         return boardString;
     }
@@ -47,7 +66,7 @@ public class Board {
 
     // is this board the goal board?
     public boolean isGoal() {
-        return false;
+        return hamming() == 0;
     }
 
     // does this board equal y?
@@ -71,7 +90,49 @@ public class Board {
 
     // all neighboring boards
     public Iterable<Board> neighbors() {
-        return null;
+        List<Board> neighborsList = new ArrayList<>();
+        if (zeroX - 1 >= 0) {
+            int[][] neighborArray = boardArray.clone();
+            for (int i = 0; i < neighborArray.length; i++)
+                neighborArray[i] = boardArray[i].clone();
+
+            int temp = neighborArray[zeroY][zeroX];
+            neighborArray[zeroY][zeroX] = neighborArray[zeroY][zeroX - 1];
+            neighborArray[zeroY][zeroX - 1] = temp;
+            neighborsList.add(new Board(neighborArray));
+        }
+        if (zeroX + 1 < boardArray.length) {
+            int[][] neighborArray = boardArray.clone();
+            for (int i = 0; i < neighborArray.length; i++)
+                neighborArray[i] = boardArray[i].clone();
+
+            int temp = neighborArray[zeroY][zeroX];
+            neighborArray[zeroY][zeroX] = neighborArray[zeroY][zeroX + 1];
+            neighborArray[zeroY][zeroX + 1] = temp;
+            neighborsList.add(new Board(neighborArray));
+        }
+        if (zeroY - 1 >= 0) {
+            int[][] neighborArray = boardArray.clone();
+            for (int i = 0; i < neighborArray.length; i++)
+                neighborArray[i] = boardArray[i].clone();
+
+            int temp = neighborArray[zeroY][zeroX];
+            neighborArray[zeroY][zeroX] = neighborArray[zeroY - 1][zeroX];
+            neighborArray[zeroY - 1][zeroX] = temp;
+            neighborsList.add(new Board(neighborArray));
+        }
+        if (zeroY + 1 < boardArray.length) {
+            int[][] neighborArray = boardArray.clone();
+            for (int i = 0; i < neighborArray.length; i++)
+                neighborArray[i] = boardArray[i].clone();
+
+            int temp = neighborArray[zeroY][zeroX];
+            neighborArray[zeroY][zeroX] = neighborArray[zeroY + 1][zeroX];
+            neighborArray[zeroY + 1][zeroX] = temp;
+            neighborsList.add(new Board(neighborArray));
+        }
+
+        return neighborsList;
     }
 
     // a board that is obtained by exchanging any pair of tiles
@@ -81,7 +142,25 @@ public class Board {
 
     // unit testing (not graded)
     public static void main(String[] args) {
+        In in = new In();
+        int n = in.readInt();
+        int[][] tiles = new int[n][n];
 
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                tiles[i][j] = in.readInt();
+
+        Board initial = new Board(tiles);
+        List<Board> initialNeighbors = (List<Board>) initial.neighbors();
+        System.out.println("The board is: \n" + initial.toString());
+        System.out.println("The hamming of the board is: " + initial.hamming());
+        System.out.println("Is the board solved ? " + initial.isGoal());
+        System.out.println("It has " + initialNeighbors.size() + " neighbors");
+        int index = 1;
+        for (Board b : initialNeighbors) {
+            System.out.println("Neighbor " + index + " is: \n" + b.toString());
+            index++;
+        }
     }
 
 }

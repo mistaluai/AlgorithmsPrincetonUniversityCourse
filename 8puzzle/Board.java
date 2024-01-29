@@ -1,6 +1,8 @@
 import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.StdRandom;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Board {
@@ -155,7 +157,12 @@ public class Board {
 
     // a board that is obtained by exchanging any pair of tiles
     public Board twin() {
-        return null;
+        int random = StdRandom.uniformInt(3);
+        Iterator twinIterator = neighbors().iterator();
+        Board twinBoard = new Board(boardArray);
+        for (int i = 0; i <= random; i++)
+            twinBoard = (Board) twinIterator.next();
+        return twinBoard;
     }
 
     // unit testing (not graded)
@@ -180,6 +187,7 @@ public class Board {
             System.out.println("Neighbor " + index + " is: \n" + b.toString());
             index++;
         }
+        System.out.println("The twin is: \n" + initial.twin());
     }
 
 }
